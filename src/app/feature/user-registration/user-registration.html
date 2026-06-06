@@ -1,0 +1,255 @@
+<div class="registration-container">
+  <div class="registration-wrapper">
+    <!-- Header -->
+    <div class="registration-header">
+      <h1 class="registration-title">Hospital Management System</h1>
+      <p class="registration-subtitle">Create your account</p>
+    </div>
+
+    <!-- Registration Form -->
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="registration-form">
+      <!-- User Role Selection -->
+      <div class="form-section">
+        <label class="section-label">Select Your Role</label>
+        <mat-form-field class="form-field full-width">
+          <mat-label>User Role</mat-label>
+          <mat-select formControlName="userRole" required>
+            <mat-option *ngFor="let role of userRoles" [value]="role.value">
+              {{ role.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Personal Information -->
+      <div class="form-section">
+        <label class="section-label">Personal Information</label>
+
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" required />
+            <mat-error *ngIf="registrationForm.get('firstName')?.hasError('required')">
+              First Name is required
+            </mat-error>
+            <mat-error *ngIf="registrationForm.get('firstName')?.hasError('minlength')">
+              First Name must be at least 2 characters
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" required />
+            <mat-error *ngIf="registrationForm.get('lastName')?.hasError('required')">
+              Last Name is required
+            </mat-error>
+            <mat-error *ngIf="registrationForm.get('lastName')?.hasError('minlength')">
+              Last Name must be at least 2 characters
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Email Address</mat-label>
+            <input matInput type="email" formControlName="email" required />
+            <mat-error *ngIf="registrationForm.get('email')?.hasError('required')">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="registrationForm.get('email')?.hasError('email')">
+              Please enter a valid email address
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Phone Number</mat-label>
+            <input matInput formControlName="phone" placeholder="(123) 456-7890" required />
+            <mat-error *ngIf="registrationForm.get('phone')?.hasError('required')">
+              Phone is required
+            </mat-error>
+            <mat-error *ngIf="registrationForm.get('phone')?.hasError('pattern')">
+              Please enter a valid phone number
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" required />
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="registrationForm.get('dateOfBirth')?.hasError('required')">
+              Date of Birth is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Password Section -->
+      <div class="form-section">
+        <label class="section-label">Security</label>
+
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="password" required />
+            <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
+              <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            <mat-error *ngIf="registrationForm.get('password')?.hasError('required')">
+              Password is required
+            </mat-error>
+            <mat-error *ngIf="registrationForm.get('password')?.hasError('minlength')">
+              Password must be at least 8 characters
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Password Strength Indicator -->
+        <div class="password-strength" *ngIf="registrationForm.get('password')?.value">
+          <div class="strength-meter">
+            <div class="strength-bar" [ngClass]="'strength-' + passwordStrength().level"></div>
+          </div>
+          <span class="strength-text" [ngClass]="'strength-' + passwordStrength().level">
+            Password Strength: {{ passwordStrength().level | titlecase }}
+          </span>
+          <ul class="feedback-list" *ngIf="passwordStrength().feedback.length > 0">
+            <li *ngFor="let tip of passwordStrength().feedback">{{ tip }}</li>
+          </ul>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Confirm Password</mat-label>
+            <input matInput [type]="hideConfirmPassword() ? 'password' : 'text'" formControlName="confirmPassword" required />
+            <button mat-icon-button matSuffix (click)="toggleConfirmPasswordVisibility()" type="button">
+              <mat-icon>{{ hideConfirmPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            <mat-error *ngIf="registrationForm.get('confirmPassword')?.hasError('required')">
+              Please confirm your password
+            </mat-error>
+            <mat-error *ngIf="registrationForm.hasError('passwordMismatch') && registrationForm.get('confirmPassword')?.touched">
+              Passwords do not match
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Role-Specific Fields: Patient -->
+      <div class="form-section" *ngIf="registrationForm.get('userRole')?.value === 'patient'">
+        <label class="section-label">Patient Information</label>
+
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Insurance ID</mat-label>
+            <input matInput formControlName="insuranceId" placeholder="Optional" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Emergency Contact Name</mat-label>
+            <input matInput formControlName="emergencyContact" placeholder="Optional" />
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Emergency Contact Phone</mat-label>
+            <input matInput formControlName="emergencyPhone" placeholder="Optional" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Role-Specific Fields: Doctor -->
+      <div class="form-section" *ngIf="registrationForm.get('userRole')?.value === 'doctor'">
+        <label class="section-label">Professional Information</label>
+
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>License Number</mat-label>
+            <input matInput formControlName="licenseNumber" required />
+            <mat-error *ngIf="registrationForm.get('licenseNumber')?.hasError('required')">
+              License Number is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Specialization</mat-label>
+            <mat-select formControlName="specialization" required>
+              <mat-option *ngFor="let spec of specializations" [value]="spec">
+                {{ spec }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="registrationForm.get('specialization')?.hasError('required')">
+              Specialization is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Department</mat-label>
+            <input matInput formControlName="department" required />
+            <mat-error *ngIf="registrationForm.get('department')?.hasError('required')">
+              Department is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Role-Specific Fields: Admin -->
+      <div class="form-section" *ngIf="registrationForm.get('userRole')?.value === 'admin'">
+        <label class="section-label">Admin Information</label>
+
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Employee ID</mat-label>
+            <input matInput formControlName="employeeId" required />
+            <mat-error *ngIf="registrationForm.get('employeeId')?.hasError('required')">
+              Employee ID is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Department</mat-label>
+            <input matInput formControlName="department" required />
+            <mat-error *ngIf="registrationForm.get('department')?.hasError('required')">
+              Department is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Terms & Conditions -->
+      <div class="form-section terms-section">
+        <mat-checkbox formControlName="agreedToTerms" required class="terms-checkbox">
+          <span class="terms-text">
+            I agree to the
+            <a href="#" class="terms-link">Terms & Conditions</a>
+            and
+            <a href="#" class="terms-link">Privacy Policy</a>
+          </span>
+        </mat-checkbox>
+        <mat-error *ngIf="registrationForm.get('agreedToTerms')?.hasError('required')" class="terms-error">
+          You must agree to the terms and conditions
+        </mat-error>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button type="submit" mat-raised-button color="primary" class="submit-btn" [disabled]="isLoading()">
+          <mat-icon *ngIf="isLoading()" class="spinner">hourglass_empty</mat-icon>
+          {{ isLoading() ? 'Creating Account...' : 'Create Account' }}
+        </button>
+        <button type="button" mat-stroked-button class="reset-btn" (click)="onReset()" [disabled]="isLoading()">
+          Clear Form
+        </button>
+      </div>
+
+      <!-- Login Link -->
+      <div class="login-link">
+        <p>Already have an account? <a href="/login">Login here</a></p>
+      </div>
+    </form>
+  </div>
+</div>
