@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators, FormGroup, AbstractControl } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,6 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
+import { UserService } from '../../Core/Services/user-service';
 
 interface PasswordStrength {
   score: number;
@@ -39,6 +41,9 @@ interface PasswordStrength {
   styleUrl: './user-registration.scss',
 })
 export class UserRegistrationComponent {
+
+  userService=inject(UserService);
+
   registrationForm!: FormGroup;
   isLoading = signal(false);
   passwordStrength = signal<PasswordStrength>({
@@ -49,23 +54,21 @@ export class UserRegistrationComponent {
   hidePassword = signal(true);
   hideConfirmPassword = signal(true);
   agreedToTerms = signal(false);
-
-  readonly userRoles = [
-    { value: 'patient', label: 'Patient' },
-    { value: 'doctor', label: 'Doctor/Staff' },
-    { value: 'admin', label: 'Administrator' },
-  ];
-
-  readonly specializations = [
-    'Cardiology',
-    'Dermatology',
-    'General Practice',
-    'Internal Medicine',
-    'Orthopedics',
-    'Pediatrics',
-    'Psychiatry',
-    'Surgery',
-  ];
+  
+  userRoles = toSignal(this.userService.getRoles(), { initialValue: [] });
+  //  userRoles = rxResource({
+  //   loader:()=>this.userService.getRoles(),
+  // });
+  // readonly specializations = [
+  //   'Cardiology',
+  //   'Dermatology',
+  //   'General Practice',
+  //   'Internal Medicine',
+  //   'Orthopedics',
+  //   'Pediatrics',
+  //   'Psychiatry',
+  //   'Surgery',
+  // ];
 
   constructor(
     private fb: FormBuilder,
@@ -73,6 +76,8 @@ export class UserRegistrationComponent {
   ) {
     this.initializeForm();
   }
+
+ 
 
   private initializeForm(): void {
     this.registrationForm = this.fb.group(
@@ -85,21 +90,8 @@ export class UserRegistrationComponent {
         dateOfBirth: ['', [Validators.required]],
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', Validators.required],
-        userRole: ['patient', Validators.required],
+        userRole: ['', Validators.required],
         agreedToTerms: [false, Validators.requiredTrue],
-
-        // Patient fields
-        insuranceId: [''],
-        emergencyContact: [''],
-        emergencyPhone: [''],
-
-        // Doctor fields
-        licenseNumber: [''],
-        specialization: [''],
-        department: [''],
-
-        // Admin fields
-        employeeId: [''],
       },
       {
         validators: this.passwordMatchValidator(),
@@ -114,11 +106,17 @@ export class UserRegistrationComponent {
     });
 
     // Watch userRole to update field requirements
-    this.registrationForm.get('userRole')?.valueChanges.subscribe((role) => {
-      this.updateFieldRequirements(role);
-    });
-  }
+    // this.registrationForm.get('userRole')?.valueChanges.subscribe((role) => {
+    //   // this.updateFieldRequirements(role);
+    //   this.registrationForm.get('')
 
+    // });
+  }
+  get fullName(){
+    const firstName = this.registrationForm.get('firstName')?.value || '';
+    const lastName = this.registrationForm.get('lastName')?.value || '';
+    return `${firstName} ${lastName}`.trim();
+  }
   private passwordMatchValidator() {
     return (group: AbstractControl) => {
       const password = group.get('password')?.value;
@@ -127,47 +125,47 @@ export class UserRegistrationComponent {
     };
   }
 
-  private updateFieldRequirements(role: string): void {
-    const form = this.registrationForm;
+  // private updateFieldRequirements(role: string): void {
+  //   const form = this.registrationForm;
 
-    // Reset all role-specific fields
-    form.get('insuranceId')?.clearAsyncValidators();
-    form.get('licenseNumber')?.clearAsyncValidators();
-    form.get('employeeId')?.clearAsyncValidators();
-    form.get('specialization')?.clearAsyncValidators();
-    form.get('department')?.clearAsyncValidators();
+  //   // Reset all role-specific fields
+  //   form.get('insuranceId')?.clearAsyncValidators();
+  //   form.get('licenseNumber')?.clearAsyncValidators();
+  //   form.get('employeeId')?.clearAsyncValidators();
+  //   form.get('specialization')?.clearAsyncValidators();
+  //   form.get('department')?.clearAsyncValidators();
 
-    form.get('insuranceId')?.setValidators([]);
-    form.get('licenseNumber')?.setValidators([]);
-    form.get('employeeId')?.setValidators([]);
-    form.get('specialization')?.setValidators([]);
-    form.get('department')?.setValidators([]);
+  //   form.get('insuranceId')?.setValidators([]);
+  //   form.get('licenseNumber')?.setValidators([]);
+  //   form.get('employeeId')?.setValidators([]);
+  //   form.get('specialization')?.setValidators([]);
+  //   form.get('department')?.setValidators([]);
 
-    switch (role) {
-      case 'patient':
-        form.get('insuranceId')?.setValidators([Validators.minLength(5)]);
-        form.get('emergencyContact')?.setValidators([Validators.minLength(2)]);
-        form.get('emergencyPhone')?.setValidators([Validators.pattern(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/)]);
-        break;
-      case 'doctor':
-        form.get('licenseNumber')?.setValidators([Validators.required, Validators.minLength(5)]);
-        form.get('specialization')?.setValidators([Validators.required]);
-        form.get('department')?.setValidators([Validators.required]);
-        break;
-      case 'admin':
-        form.get('employeeId')?.setValidators([Validators.required, Validators.minLength(4)]);
-        form.get('department')?.setValidators([Validators.required]);
-        break;
-    }
+  //   switch (role.toUpperCase()) {
+  //     case 'patient':
+  //       form.get('insuranceId')?.setValidators([Validators.minLength(5)]);
+  //       form.get('emergencyContact')?.setValidators([Validators.minLength(2)]);
+  //       form.get('emergencyPhone')?.setValidators([Validators.pattern(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/)]);
+  //       break;
+  //     case 'doctor':
+  //       form.get('licenseNumber')?.setValidators([Validators.required, Validators.minLength(5)]);
+  //       form.get('specialization')?.setValidators([Validators.required]);
+  //       form.get('department')?.setValidators([Validators.required]);
+  //       break;
+  //     case 'super_admin':
+  //       form.get('employeeId')?.setValidators([Validators.required, Validators.minLength(4)]);
+  //       form.get('department')?.setValidators([Validators.required]);
+  //       break;
+  //   }
 
-    form.get('insuranceId')?.updateValueAndValidity();
-    form.get('licenseNumber')?.updateValueAndValidity();
-    form.get('employeeId')?.updateValueAndValidity();
-    form.get('specialization')?.updateValueAndValidity();
-    form.get('department')?.updateValueAndValidity();
-    form.get('emergencyContact')?.updateValueAndValidity();
-    form.get('emergencyPhone')?.updateValueAndValidity();
-  }
+  //   form.get('insuranceId')?.updateValueAndValidity();
+  //   form.get('licenseNumber')?.updateValueAndValidity();
+  //   form.get('employeeId')?.updateValueAndValidity();
+  //   form.get('specialization')?.updateValueAndValidity();
+  //   form.get('department')?.updateValueAndValidity();
+  //   form.get('emergencyContact')?.updateValueAndValidity();
+  //   form.get('emergencyPhone')?.updateValueAndValidity();
+  // }
 
   private calculatePasswordStrength(password: string): PasswordStrength {
     const feedback: string[] = [];
@@ -209,13 +207,27 @@ export class UserRegistrationComponent {
     this.isLoading.set(true);
 
     // Simulate API call
-    setTimeout(() => {
       const formData = this.registrationForm.value;
-      console.log('Registration Data:', formData);
-      this.snackBar.open('Registration successful!', 'Close', { duration: 5000 });
-      this.isLoading.set(false);
-      this.registrationForm.reset();
-    }, 2000);
+      const userData = {
+        fullName: this.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        dateOfBirth: formData.dateOfBirth,
+        password: formData.password,
+        role: formData.userRole,
+        agreedToTermsOfUse: formData.agreedToTerms,
+      }
+      console.log('Registration Data:', userData);
+      this.userService.addUser(userData).subscribe((response) => {
+        if (response.statusCode === 201) {
+          this.snackBar.open('Registration successful!', 'Close', { duration: 5000 });
+          this.registrationForm.reset();
+        } else {
+          this.snackBar.open(`Registration failed: ${response.message}`, 'Close', { duration: 5000 });
+        }
+        this.isLoading.set(false);
+      });
+      
   }
 
   onReset(): void {

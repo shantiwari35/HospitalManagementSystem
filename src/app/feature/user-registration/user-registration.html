@@ -10,14 +10,25 @@
     <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="registration-form">
       <!-- User Role Selection -->
       <div class="form-section">
-        <label class="section-label">Select Your Role</label>
+        <label class="section-label">Select User Role</label>
         <mat-form-field class="form-field full-width">
           <mat-label>User Role</mat-label>
           <mat-select formControlName="userRole" required>
-            <mat-option *ngFor="let role of userRoles" [value]="role.value">
-              {{ role.label }}
+            <mat-option [value]="">Select Role</mat-option>
+            
+            @for(role of userRoles() || []; track role){
+            <mat-option [value]="role">
+                  {{ role | titlecase}}
             </mat-option>
+            }
+            
           </mat-select>
+          @if (registrationForm.get('userRole')?.hasError('required')) {
+            <mat-error >
+                User Role is required
+            </mat-error>
+          }
+          
         </mat-form-field>
       </div>
 
@@ -97,12 +108,16 @@
             <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
               <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
             </button>
-            <mat-error *ngIf="registrationForm.get('password')?.hasError('required')">
-              Password is required
-            </mat-error>
-            <mat-error *ngIf="registrationForm.get('password')?.hasError('minlength')">
-              Password must be at least 8 characters
-            </mat-error>
+            @if (registrationForm.get('password')?.hasError('required')) {
+              <mat-error>
+                Password is required
+              </mat-error>
+            }
+            @if (registrationForm.get('password')?.hasError('minlength')) {
+              <mat-error>
+                Password must be at least 8 characters
+              </mat-error>
+            }
           </mat-form-field>
         </div>
 
@@ -161,7 +176,7 @@
       </div>
 
       <!-- Role-Specific Fields: Doctor -->
-      <div class="form-section" *ngIf="registrationForm.get('userRole')?.value === 'doctor'">
+      <!-- <div class="form-section" *ngIf="registrationForm.get('userRole')?.value === 'doctor'">
         <label class="section-label">Professional Information</label>
 
         <div class="form-row">
@@ -172,7 +187,7 @@
               License Number is required
             </mat-error>
           </mat-form-field>
-        </div>
+        </div> 
 
         <div class="form-row">
           <mat-form-field class="form-field">
@@ -195,10 +210,10 @@
             </mat-error>
           </mat-form-field>
         </div>
-      </div>
+      </div>  -->
 
       <!-- Role-Specific Fields: Admin -->
-      <div class="form-section" *ngIf="registrationForm.get('userRole')?.value === 'admin'">
+      <!-- <div class="form-section" *ngIf="registrationForm.get('userRole')?.value === 'admin'">
         <label class="section-label">Admin Information</label>
 
         <div class="form-row">
@@ -218,7 +233,7 @@
             </mat-error>
           </mat-form-field>
         </div>
-      </div>
+      </div> -->
 
       <!-- Terms & Conditions -->
       <div class="form-section terms-section">
@@ -237,7 +252,7 @@
 
       <!-- Form Actions -->
       <div class="form-actions">
-        <button type="submit" mat-raised-button color="primary" class="submit-btn" [disabled]="isLoading()">
+        <button type="submit" mat-raised-button color="primary" class="submit-btn" [disabled]="isLoading() || registrationForm.invalid">
           <mat-icon *ngIf="isLoading()" class="spinner">hourglass_empty</mat-icon>
           {{ isLoading() ? 'Creating Account...' : 'Create Account' }}
         </button>
@@ -248,7 +263,7 @@
 
       <!-- Login Link -->
       <div class="login-link">
-        <p>Already have an account? <a href="/login">Login here</a></p>
+        <p>Already have an account? <a routerLink="/login">Login here</a></p>
       </div>
     </form>
   </div>

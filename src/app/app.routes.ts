@@ -7,6 +7,10 @@ export const routes: Routes = [
     component: UserRegistrationComponent,
   },
   {
+    path:'user-list',
+    loadComponent: () => import('./feature/user-list/user-list').then(m => m.UserList),
+  },
+  {
     path: '',
     redirectTo: '/register',
     pathMatch: 'full',

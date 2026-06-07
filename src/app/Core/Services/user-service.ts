@@ -2,6 +2,7 @@ import { inject, Service } from '@angular/core';
 import { InjectionToken } from '@angular/core';
 import { API_URL } from '../../app.config';
 import { HttpClient } from '@angular/common/http';
+import { catchError, map, of, tap } from 'rxjs';
 @Service()
 export class UserService {
 
@@ -12,9 +13,35 @@ export class UserService {
     
 
     getRoles(){
-        return this.http.get(`${this.userUrl}/roles`);
+        return this.http.get(`${this.userUrl}/roles`).pipe(
+            tap((roles) => console.log('Fetched roles:', roles)),
+            map((response: any) => response.data || []), // Adjust based on actual API response structure
+            catchError((error) => {
+                console.error('Error fetching roles:', error);
+                return of([]); // Return an empty array on error
+            })
+        );
     }
 
+    addUser(userData:any){
+        return this.http.post(`${this.userUrl}`, userData).pipe(
+            tap((response) => console.log('User registered successfully:', response)),
+            map((response: any) => response), // Adjust based on actual API response structure
+            catchError((error) => {
+                return of({ statusCode: 500, message: error.message ,data: null});
+            })
+        );
+    }
 
+    getUsers(){
+        return this.http.get(`${this.userUrl}`).pipe(
+            tap((response) => console.log('Fetched users:', response)),
+            map((response: any) => response || []), // Adjust based on actual API response structure
+            catchError((error) => {
+                console.error('Error fetching users:', error);
+                return of([]); // Return an empty array on error
+            })
+        );
+    }
 
 }

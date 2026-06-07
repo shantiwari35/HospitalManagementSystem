@@ -331,6 +331,7 @@ $transition: all 0.3s ease;
 .submit-btn,
 .reset-btn {
   padding: 12px 32px;
+  
   font-size: 15px;
   font-weight: 600;
   border-radius: $border-radius;
@@ -361,9 +362,10 @@ $transition: all 0.3s ease;
   }
 }
 
+
 .submit-btn {
   background: linear-gradient(135deg, $primary-color, $primary-dark);
-  color: white;
+  color: white !important;
   border: none;
 
   &:hover:not(:disabled) {
@@ -374,7 +376,8 @@ $transition: all 0.3s ease;
 .reset-btn {
   border: 2px solid $border-color;
   background: transparent;
-  color: $text-secondary;
+  color: $primary-color !important;
+
 
   &:hover:not(:disabled) {
     background: $background-light;
@@ -471,7 +474,7 @@ $transition: all 0.3s ease;
 // Dark mode support (optional)
 @media (prefers-color-scheme: dark) {
   .registration-wrapper {
-    background: #1e1e1e;
+    
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   }
 
@@ -487,20 +490,20 @@ $transition: all 0.3s ease;
   .form-field {
     ::ng-deep {
       .mdc-text-field--filled {
-        background-color: #2a2a2a;
+        // background-color: #2a2a2a;
       }
     }
   }
 
   .password-strength {
-    background-color: #2a2a2a;
+    // background-color: #2a2a2a;
     border-left-color: #ff9800;
   }
 
-  .terms-section {
-    background-color: #2a2a2a;
-    border-color: #3a3a3a;
-  }
+//   .terms-section {
+//     background-color: #2a2a2a;
+//     border-color: #3a3a3a;
+//   }
 
   .login-link {
     border-top-color: #3a3a3a;
