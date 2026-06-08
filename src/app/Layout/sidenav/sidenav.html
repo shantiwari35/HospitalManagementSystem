@@ -1,0 +1,25 @@
+ <mat-sidenav-container class="example-container" (backdropClick)="backdropClicked()">
+    <mat-sidenav #sidenav [mode]="'over'" [opened]="opened()" >
+      
+        <div class="sidenav-content">
+            <h2>Navigation</h2>
+            <button mat-button routerLink="/dashboard" (click)="sidenav.toggle()">Dashboard</button>
+            <button mat-button routerLink="/users" (click)="sidenav.toggle()">Users</button>
+            <button mat-button routerLink="/appointments" (click)="sidenav.toggle()">Appointments</button>
+            <button mat-button routerLink="/doctors" (click)="sidenav.toggle()">Doctors</button>
+            <button mat-button routerLink="/patients" (click)="sidenav.toggle()">Patients</button>
+            <button mat-button routerLink="/departments" (click)="sidenav.toggle()">Departments</button>
+            <!-- Add more navigation links as needed -->
+        </div>
+    
+    </mat-sidenav>
+
+    <mat-sidenav-content >
+        <div class="main-content">
+          <ng-content></ng-content>
+        </div>
+       
+    </mat-sidenav-content>
+
+    
+  </mat-sidenav-container>
