@@ -15,6 +15,10 @@ export const routes: Routes = [
       ),
   },
   {
+    path:'user-edit/:id',
+    loadComponent:()=>import('./feature/user-registration/user-registration').then(m=>m.UserRegistrationComponent)
+  },
+  {
     path: 'users',
     loadComponent: () => import('./feature/user-list/user-list').then((m) => m.UserList),
   },

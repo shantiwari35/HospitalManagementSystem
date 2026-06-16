@@ -16,7 +16,7 @@
           <mat-select formControlName="userRole" required>
             <mat-option [value]="">Select Role</mat-option>
             
-            @for(role of userRoles() || []; track role){
+            @for(role of (userRoles|async) || []; track role){
             <mat-option [value]="role">
                   {{ role | textFormat }}
             </mat-option>

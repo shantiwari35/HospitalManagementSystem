@@ -56,4 +56,15 @@ export class UserService {
         );
     }
 
+    getUserById(id:any){
+        console.log(id);
+        return this.http.get(`${this.userUrl}/${id}`).pipe(
+            tap((response) => console.log('User fetched successfully:', response)),
+            map((response: any) => response), // Adjust based on actual API response structure
+            catchError((error) => {
+                return of({ statusCode: 500, message: error.message ,data: null});
+            })
+        );
+    }
+
 }
