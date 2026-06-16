@@ -1,9 +1,10 @@
-import { inject, Service } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { InjectionToken } from '@angular/core';
 import { API_URL } from '../../app.config';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, of, tap } from 'rxjs';
-@Service()
+@Injectable({
+    providedIn: 'root'})
 export class UserService {
 
     url=inject(API_URL);
