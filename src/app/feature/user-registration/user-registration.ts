@@ -91,7 +91,7 @@ export class UserRegistrationComponent {
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', Validators.required],
         userRole: ['', Validators.required],
-        agreedToTerms: [false, Validators.requiredTrue],
+        agreedToTerms: [false, Validators.required],
       },
       {
         validators: this.passwordMatchValidator(),

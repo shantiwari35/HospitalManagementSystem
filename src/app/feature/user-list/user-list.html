@@ -6,6 +6,21 @@
     </mat-card-header>
 
     <mat-card-content>
+      <div class="user-list-card">
+        <div class="user-list-card__content">
+          <p class="user-list-card__eyebrow">Hospital directory</p>
+          <h2 class="user-list-card__title">Manage users in one place</h2>
+          <p class="user-list-card__description">
+            Review profiles, contact details, roles, and account actions from a single view.
+          </p>
+        </div>
+
+        <div class="user-list-card__badge" aria-label="Total users">
+          <span class="user-list-card__badge-value">{{ data.data.length }}</span>
+          <span class="user-list-card__badge-label">Users</span>
+        </div>
+      </div>
+
       <div class="example-container mat-elevation-z8">
         @if (isLoadingResults()) {
           <div class="example-loading-shade">
@@ -62,8 +77,8 @@
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef>Actions</th>
               <td mat-cell *matCellDef="let row">
-                <button mat-button color="primary">Edit</button>
-                <button mat-button color="warn">Delete</button>
+                <button mat-button class="app-btn app-btn--edit edit-btn">Edit</button>
+                <button mat-button class="app-btn app-btn--delete delete-btn">Delete</button>
               </td>
             </ng-container>
             <!-- Created Column -->

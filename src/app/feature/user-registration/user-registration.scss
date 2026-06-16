@@ -328,64 +328,6 @@ $transition: all 0.3s ease;
   }
 }
 
-.submit-btn,
-.reset-btn {
-  padding: 12px 32px;
-  
-  font-size: 15px;
-  font-weight: 600;
-  border-radius: $border-radius;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: $transition;
-  cursor: pointer;
-  min-width: 180px;
-
-  @media (max-width: 600px) {
-    min-width: unset;
-    width: 100%;
-  }
-
-  &:hover:not(:disabled) {
-    @include button-hover;
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-
-  .spinner {
-    animation: spin 1s linear infinite;
-    display: inline-block;
-    margin-right: 8px;
-  }
-}
-
-
-.submit-btn {
-  background: linear-gradient(135deg, $primary-color, $primary-dark);
-  color: white !important;
-  border: none;
-
-  &:hover:not(:disabled) {
-    box-shadow: 0 8px 24px rgba(33, 150, 243, 0.4);
-  }
-}
-
-.reset-btn {
-  border: 2px solid $border-color;
-  background: transparent;
-  color: $primary-color !important;
-
-
-  &:hover:not(:disabled) {
-    background: $background-light;
-    border-color: $primary-color;
-    color: $primary-color;
-  }
-}
-
 // Login Link
 .login-link {
   text-align: center;

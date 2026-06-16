@@ -1,18 +1,30 @@
 import { Routes } from '@angular/router';
-import { UserRegistrationComponent } from './feature/user-registration/user-registration';
+import { Sidenav } from './Layout/sidenav/sidenav';
 
 export const routes: Routes = [
   {
-    path: 'register',
-    component: UserRegistrationComponent,
-  },
-  {
-    path:'user-list',
-    loadComponent: () => import('./feature/user-list/user-list').then(m => m.UserList),
-  },
-  {
     path: '',
-    redirectTo: '/register',
     pathMatch: 'full',
+    redirectTo: 'register',
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./feature/user-registration/user-registration').then(
+        (m) => m.UserRegistrationComponent,
+      ),
+  },
+  {
+    path: 'users',
+    loadComponent: () => import('./feature/user-list/user-list').then((m) => m.UserList),
+  },
+  {
+    path: 'user-list',
+    redirectTo: 'users',
+    pathMatch: 'full',
+  },
+  {
+    path: '**',
+    redirectTo: 'register',
   },
 ];

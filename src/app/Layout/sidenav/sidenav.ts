@@ -1,29 +1,48 @@
 import { Component, computed, inject } from '@angular/core';
-import {MatDrawerMode, MatSidenavModule} from '@angular/material/sidenav';
-import {MatRadioModule} from '@angular/material/radio';
-import {MatButtonModule} from '@angular/material/button';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule, MatDrawerMode } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CommonService } from '../../Core/Services/common-service';
-import { CdkConnectedOverlay } from "@angular/cdk/overlay";
-import { CdkObserveContent } from "@angular/cdk/observers";
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 @Component({
   selector: 'app-sidenav',
-  imports: [MatSidenavModule, MatRadioModule, MatButtonModule, ReactiveFormsModule, CdkConnectedOverlay, CdkObserveContent],
+  imports: [
+    MatSidenavModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+  ],
   templateUrl: './sidenav.html',
   styleUrl: './sidenav.scss',
 })
 export class Sidenav {
- 
-  commonService = inject(CommonService);
-  opened = computed(() => {
-    console.log('Sidenav opened state:', this.commonService.toggleSidenav() );
-    return this.commonService.toggleSidenav();
-  });
-  
-  backdropClicked() {
-    console.log('Backdrop clicked. Closing sidenav.');
+  private readonly commonService = inject(CommonService);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+
+  readonly isMobile = toSignal(
+    this.breakpointObserver.observe('(max-width: 960px)').pipe(map((state) => state.matches)),
+    { initialValue: false }
+  );
+
+  readonly drawerMode = computed<MatDrawerMode>(() => (this.isMobile() ? 'over' : 'side'));
+  readonly opened = computed(() => this.commonService.isSidenavOpen());
+
+  toggleSidenav(): void {
     this.commonService.toggleSidenavState();
   }
 
-  
+  closeSidenav(): void {
+    if (this.isMobile()) {
+      this.commonService.closeSidenav();
+    }
+  }
 }

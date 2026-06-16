@@ -1,0 +1,29 @@
+<mat-card class="form-shell-card" appearance="outlined">
+  <mat-card-header class="form-shell-card__header">
+    <mat-card-title>{{ title() }}</mat-card-title>
+    @if (subtitle()) {
+      <mat-card-subtitle>{{ subtitle() }}</mat-card-subtitle>
+    }
+  </mat-card-header>
+
+  <mat-card-content class="form-shell-card__content">
+    <form class="form-shell" [formGroup]="formGroup()" (ngSubmit)="submitted.emit()">
+      <div class="form-shell__body">
+        <ng-content></ng-content>
+      </div>
+
+      @if (showDefaultActions()) {
+        <div class="form-shell__actions">
+          <button type="button" mat-stroked-button class="app-btn app-btn--cancel cancel-btn" (click)="cancelled.emit()">
+            {{ cancelLabel() }}
+          </button>
+          <button type="submit" mat-raised-button class="app-btn app-btn--submit submit-btn" [disabled]="isSubmitDisabled()">
+            {{ submitLabel() }}
+          </button>
+        </div>
+      }
+
+      <ng-content select="[form-actions]"></ng-content>
+    </form>
+  </mat-card-content>
+</mat-card>

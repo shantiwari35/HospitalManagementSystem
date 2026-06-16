@@ -1,25 +1,46 @@
- <mat-sidenav-container class="example-container" (backdropClick)="backdropClicked()">
-    <mat-sidenav #sidenav [mode]="'over'" [opened]="opened()" >
-      
-        <div class="sidenav-content">
-            <h2>Navigation</h2>
-            <button mat-button routerLink="/dashboard" (click)="sidenav.toggle()">Dashboard</button>
-            <button mat-button routerLink="/users" (click)="sidenav.toggle()">Users</button>
-            <button mat-button routerLink="/appointments" (click)="sidenav.toggle()">Appointments</button>
-            <button mat-button routerLink="/doctors" (click)="sidenav.toggle()">Doctors</button>
-            <button mat-button routerLink="/patients" (click)="sidenav.toggle()">Patients</button>
-            <button mat-button routerLink="/departments" (click)="sidenav.toggle()">Departments</button>
-            <!-- Add more navigation links as needed -->
-        </div>
-    
-    </mat-sidenav>
+<mat-sidenav-container class="shell-container" [hasBackdrop]="isMobile()" (backdropClick)="closeSidenav()">
+  <mat-sidenav
+    class="shell-drawer"
+    [mode]="drawerMode()"
+    [opened]="opened()"
+    [fixedInViewport]="isMobile()"
+  >
+    <div class="shell-drawer__header">
+      <div class="shell-drawer__brand">HMS</div>
+      <div class="shell-drawer__copy">
+        <h2 class="shell-drawer__title">Hospital Management</h2>
+        <p class="shell-drawer__subtitle">Choose a page to load in the main area</p>
+      </div>
+    </div>
 
-    <mat-sidenav-content >
-        <div class="main-content">
-          <ng-content></ng-content>
-        </div>
-       
-    </mat-sidenav-content>
+    <nav mat-nav-list class="shell-nav" aria-label="Main navigation">
+      <a mat-list-item routerLink="/register" routerLinkActive="is-active" (click)="closeSidenav()">
+        <mat-icon matListItemIcon>person_add</mat-icon>
+        <span matListItemTitle>Register User</span>
+      </a>
+      <a mat-list-item routerLink="/users" routerLinkActive="is-active" (click)="closeSidenav()">
+        <mat-icon matListItemIcon>group</mat-icon>
+        <span matListItemTitle>User List</span>
+      </a>
+    </nav>
+  </mat-sidenav>
 
-    
-  </mat-sidenav-container>
+  <mat-sidenav-content class="shell-content">
+    <mat-toolbar class="shell-toolbar">
+      <button mat-icon-button type="button" aria-label="Toggle navigation" (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <div class="shell-toolbar__copy">
+        <span class="shell-toolbar__title">Hospital Management System</span>
+        <span class="shell-toolbar__subtitle">Manage users from a clean, scrollable workspace</span>
+      </div>
+    </mat-toolbar>
+
+    <main class="shell-main">
+      <section class="shell-page">
+        <router-outlet></router-outlet>
+      </section>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

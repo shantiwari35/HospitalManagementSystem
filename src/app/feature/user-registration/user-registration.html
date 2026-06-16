@@ -245,18 +245,18 @@
             <a href="#" class="terms-link">Privacy Policy</a>
           </span>
         </mat-checkbox>
-        <mat-error *ngIf="registrationForm.get('agreedToTerms')?.hasError('required')" class="terms-error">
+        <mat-error *ngIf="registrationForm.get('agreedToTerms')?.hasError('required') && registrationForm.get('agreedToTerms')?.touched" class="terms-error">
           You must agree to the terms and conditions
         </mat-error>
       </div>
 
       <!-- Form Actions -->
       <div class="form-actions">
-        <button type="submit" mat-raised-button color="primary" class="submit-btn" [disabled]="isLoading() || registrationForm.invalid">
+        <button type="submit" mat-raised-button class="app-btn app-btn--submit submit-btn" [disabled]="isLoading() || registrationForm.invalid">
           <mat-icon *ngIf="isLoading()" class="spinner">hourglass_empty</mat-icon>
           {{ isLoading() ? 'Creating Account...' : 'Create Account' }}
         </button>
-        <button type="button" mat-stroked-button class="reset-btn" (click)="onReset()" [disabled]="isLoading()">
+        <button type="button" mat-stroked-button class="app-btn app-btn--cancel cancel-btn reset-btn" (click)="onReset()" [disabled]="isLoading()">
           Clear Form
         </button>
       </div>

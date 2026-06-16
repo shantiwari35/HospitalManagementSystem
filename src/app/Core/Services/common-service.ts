@@ -1,12 +1,19 @@
-import { Service, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
-@Service()
+@Injectable({ providedIn: 'root' })
 export class CommonService {
-    
-    
-    toggleSidenav=signal<boolean>(false);
+  readonly toggleSidenav = signal(false);
+  readonly isSidenavOpen = this.toggleSidenav;
 
-    toggleSidenavState() {
-        this.toggleSidenav.set(!this.toggleSidenav());
-    }
+  toggleSidenavState(): void {
+    this.toggleSidenav.update((value) => !value);
+  }
+
+  openSidenav(): void {
+    this.toggleSidenav.set(true);
+  }
+
+  closeSidenav(): void {
+    this.toggleSidenav.set(false);
+  }
 }

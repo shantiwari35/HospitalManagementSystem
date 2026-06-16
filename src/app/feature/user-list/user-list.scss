@@ -1,48 +1,304 @@
-/* Structure */
+/* User list layout */
+.table-container {
+  min-height: 100vh;
+  padding: 24px;
+  background:
+    radial-gradient(circle at top, rgba(33, 150, 243, 0.12), transparent 35%),
+    linear-gradient(180deg, #f7fbff 0%, #eef4fb 100%);
+}
+
+.example-card {
+  width: min(100%, 1280px);
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: #ffffff;
+}
+
+.example-card mat-card-header {
+  padding: 24px 24px 12px;
+  background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%);
+  color: #ffffff;
+}
+
+.example-card mat-card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.example-header-image {
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.2) 45%, transparent 46%),
+    linear-gradient(135deg, #38bdf8 0%, #1d4ed8 100%);
+  border: 2px solid rgba(255, 255, 255, 0.55);
+}
+
+.example-card mat-card-content {
+  padding: 0 24px 24px;
+}
+
+.user-list-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 24px 0 20px;
+  padding: 20px 22px;
+  border-radius: 18px;
+  border: 1px solid #dbe4f0;
+  background:
+    linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(255, 255, 255, 0.95)),
+    #ffffff;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+}
+
+.user-list-card__content {
+  min-width: 0;
+}
+
+.user-list-card__eyebrow {
+  margin: 0 0 6px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #1d4ed8;
+}
+
+.user-list-card__title {
+  margin: 0 0 6px;
+  font-size: 1.15rem;
+  line-height: 1.25;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.user-list-card__description {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #475569;
+}
+
+.user-list-card__badge {
+  flex: 0 0 auto;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 92px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #1d4ed8 0%, #0f172a 100%);
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(29, 78, 216, 0.25);
+}
+
+.user-list-card__badge-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.user-list-card__badge-label {
+  margin-top: 4px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
 .example-container {
   position: relative;
 }
 
-.example-card {
-  max-width: 75vw;
-}
-
-
 .example-table-container {
   position: relative;
-  min-height: 200px;
-  max-height: 400px;
   overflow: auto;
+  border: 1px solid #dbe4f0;
+  border-radius: 16px;
+  background: #ffffff;
 }
 
-table {
+.example-table {
   width: 100%;
+  min-width: 920px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.example-table .mat-mdc-header-row {
+  background: #f8fafc;
+}
+
+.example-table .mat-mdc-header-cell {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 16px 18px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #475569;
+  border-bottom: 1px solid #dbe4f0;
+  background: #f8fafc;
+}
+
+.example-table .mat-mdc-cell {
+  padding: 16px 18px;
+  font-size: 0.95rem;
+  color: #0f172a;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: middle;
+}
+
+.example-table .mat-mdc-row {
+  transition: background-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.example-table .mat-mdc-row:nth-child(even) {
+  background: #fcfdff;
+}
+
+.example-table .mat-mdc-row:hover {
+  background: #eef6ff;
+}
+
+.example-table .mat-mdc-row:hover .mat-mdc-cell {
+  color: #0b4fb3;
+}
+
+.example-table .mat-column-id {
+  width: 90px;
+  font-weight: 700;
+  color: #1d4ed8;
+}
+
+.example-table .mat-column-fullName {
+  min-width: 180px;
+  font-weight: 600;
+}
+
+.example-table .mat-column-email {
+  min-width: 240px;
+  word-break: break-word;
+}
+
+.example-table .mat-column-phone {
+  min-width: 160px;
+  white-space: nowrap;
+}
+
+.example-table .mat-column-dateOfBirth {
+  min-width: 150px;
+  white-space: nowrap;
+}
+
+.example-table .mat-column-role {
+  min-width: 130px;
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.example-table .mat-column-actions {
+  width: 180px;
+  white-space: nowrap;
+}
+
+.example-table .mat-column-actions button {
+  min-width: 72px;
+  margin-right: 8px;
+  border-radius: 999px;
+}
+
+.example-table .mat-column-actions button:last-child {
+  margin-right: 0;
 }
 
 .example-loading-shade {
   position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 56px;
-  right: 0;
-  background: rgba(0, 0, 0, 0.15);
-  z-index: 1;
+  inset: 0 0 56px;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(3px);
 }
 
 .example-rate-limit-reached {
   max-width: 360px;
   text-align: center;
+  color: #0f172a;
 }
 
-/* Column Widths */
-.mat-column-number,
-.mat-column-state {
-  width: 64px;
+mat-paginator {
+  margin-top: 16px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #dbe4f0;
 }
 
-.mat-column-created {
-  width: 124px;
+@media (max-width: 960px) {
+  .table-container {
+    padding: 16px;
+  }
+
+  .example-card mat-card-header,
+  .example-card mat-card-content {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .example-table-container {
+    border-radius: 12px;
+  }
+
+  .user-list-card {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 640px) {
+  .table-container {
+    padding: 12px;
+  }
+
+  .example-card mat-card-header {
+    padding-top: 18px;
+    padding-bottom: 10px;
+  }
+
+  .example-card mat-card-title {
+    font-size: 1.2rem;
+  }
+
+  .example-table {
+    min-width: 860px;
+  }
+
+  .example-table .mat-mdc-header-cell,
+  .example-table .mat-mdc-cell {
+    padding: 14px 12px;
+  }
+
+  .user-list-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .user-list-card__badge {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .user-list-card__badge-label {
+    margin-top: 0;
+  }
 }
