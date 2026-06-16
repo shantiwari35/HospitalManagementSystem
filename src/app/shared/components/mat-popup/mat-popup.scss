@@ -1,0 +1,90 @@
+.popup {
+  min-width: min(100%, 420px);
+  padding: 24px;
+  border-radius: 24px;
+  background: #ffffff;
+}
+
+.popup--success .popup__icon {
+  background: linear-gradient(135deg, #16a34a 0%, #166534 100%);
+}
+
+.popup--warning .popup__icon {
+  background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%);
+}
+
+.popup--danger .popup__icon {
+  background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+}
+
+.popup__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.popup__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #1d4ed8 0%, #0f172a 100%);
+  color: #ffffff;
+}
+
+.popup__icon mat-icon {
+  width: 26px;
+  height: 26px;
+  font-size: 26px;
+}
+
+.popup__close {
+  color: #64748b;
+}
+
+.popup__body {
+  margin-top: 20px;
+}
+
+.popup__title {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  color: #0f172a;
+}
+
+.popup__message {
+  margin: 10px 0 0;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: #475569;
+}
+
+.popup__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+.popup__actions .app-btn {
+  min-width: 120px;
+}
+
+@media (max-width: 640px) {
+  .popup {
+    padding: 18px;
+  }
+
+  .popup__actions {
+    flex-direction: column-reverse;
+  }
+
+  .popup__actions .app-btn {
+    width: 100%;
+  }
+}

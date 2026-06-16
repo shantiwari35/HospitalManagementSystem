@@ -18,12 +18,12 @@
             
             @for(role of userRoles() || []; track role){
             <mat-option [value]="role">
-                  {{ role | titlecase}}
+                  {{ role | textFormat }}
             </mat-option>
             }
             
           </mat-select>
-          @if (registrationForm.get('userRole')?.hasError('required')) {
+          @if (registrationForm.get('userRole')?.hasError('required') && registrationForm.get('userRole')?.touched) {
             <mat-error >
                 User Role is required
             </mat-error>
@@ -40,10 +40,10 @@
           <mat-form-field class="form-field">
             <mat-label>First Name</mat-label>
             <input matInput formControlName="firstName" required />
-            <mat-error *ngIf="registrationForm.get('firstName')?.hasError('required')">
+            <mat-error *ngIf="registrationForm.get('firstName')?.hasError('required') && registrationForm.get('firstName')?.touched">
               First Name is required
             </mat-error>
-            <mat-error *ngIf="registrationForm.get('firstName')?.hasError('minlength')">
+            <mat-error *ngIf="registrationForm.get('firstName')?.hasError('minlength') && registrationForm.get('firstName')?.touched">
               First Name must be at least 2 characters
             </mat-error>
           </mat-form-field>
@@ -51,10 +51,10 @@
           <mat-form-field class="form-field">
             <mat-label>Last Name</mat-label>
             <input matInput formControlName="lastName" required />
-            <mat-error *ngIf="registrationForm.get('lastName')?.hasError('required')">
+            <mat-error *ngIf="registrationForm.get('lastName')?.hasError('required') && registrationForm.get('lastName')?.touched">
               Last Name is required
             </mat-error>
-            <mat-error *ngIf="registrationForm.get('lastName')?.hasError('minlength')">
+            <mat-error *ngIf="registrationForm.get('lastName')?.hasError('minlength') && registrationForm.get('lastName')?.touched">
               Last Name must be at least 2 characters
             </mat-error>
           </mat-form-field>
@@ -64,10 +64,10 @@
           <mat-form-field class="form-field">
             <mat-label>Email Address</mat-label>
             <input matInput type="email" formControlName="email" required />
-            <mat-error *ngIf="registrationForm.get('email')?.hasError('required')">
+            <mat-error *ngIf="registrationForm.get('email')?.hasError('required') && registrationForm.get('email')?.touched">
               Email is required
             </mat-error>
-            <mat-error *ngIf="registrationForm.get('email')?.hasError('email')">
+            <mat-error *ngIf="registrationForm.get('email')?.hasError('email') && registrationForm.get('email')?.touched">
               Please enter a valid email address
             </mat-error>
           </mat-form-field>
@@ -75,10 +75,10 @@
           <mat-form-field class="form-field">
             <mat-label>Phone Number</mat-label>
             <input matInput formControlName="phone" placeholder="(123) 456-7890" required />
-            <mat-error *ngIf="registrationForm.get('phone')?.hasError('required')">
+            <mat-error *ngIf="registrationForm.get('phone')?.hasError('required') && registrationForm.get('phone')?.touched">
               Phone is required
             </mat-error>
-            <mat-error *ngIf="registrationForm.get('phone')?.hasError('pattern')">
+            <mat-error *ngIf="registrationForm.get('phone')?.hasError('pattern') && registrationForm.get('phone')?.touched">
               Please enter a valid phone number
             </mat-error>
           </mat-form-field>
@@ -90,7 +90,7 @@
             <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" required />
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
-            <mat-error *ngIf="registrationForm.get('dateOfBirth')?.hasError('required')">
+            <mat-error *ngIf="registrationForm.get('dateOfBirth')?.hasError('required') && registrationForm.get('dateOfBirth')?.touched">
               Date of Birth is required
             </mat-error>
           </mat-form-field>
@@ -108,12 +108,12 @@
             <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
               <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
             </button>
-            @if (registrationForm.get('password')?.hasError('required')) {
+            @if (registrationForm.get('password')?.hasError('required') && registrationForm.get('password')?.touched) {
               <mat-error>
                 Password is required
               </mat-error>
             }
-            @if (registrationForm.get('password')?.hasError('minlength')) {
+            @if (registrationForm.get('password')?.hasError('minlength') && registrationForm.get('password')?.touched) {
               <mat-error>
                 Password must be at least 8 characters
               </mat-error>
@@ -141,7 +141,7 @@
             <button mat-icon-button matSuffix (click)="toggleConfirmPasswordVisibility()" type="button">
               <mat-icon>{{ hideConfirmPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
             </button>
-            <mat-error *ngIf="registrationForm.get('confirmPassword')?.hasError('required')">
+            <mat-error *ngIf="registrationForm.get('confirmPassword')?.hasError('required') && registrationForm.get('confirmPassword')?.touched">
               Please confirm your password
             </mat-error>
             <mat-error *ngIf="registrationForm.hasError('passwordMismatch') && registrationForm.get('confirmPassword')?.touched">

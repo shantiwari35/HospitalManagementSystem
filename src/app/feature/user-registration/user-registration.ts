@@ -1,6 +1,6 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators, FormGroup, AbstractControl } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators, FormGroup, AbstractControl, FormGroupDirective } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,6 +13,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { UserService } from '../../Core/Services/user-service';
+import { TextFormatPipe } from "../../shared/pipe/text-format-pipe";
 
 interface PasswordStrength {
   score: number;
@@ -36,13 +37,17 @@ interface PasswordStrength {
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
-  ],
+    TextFormatPipe
+],
   templateUrl: './user-registration.html',
   styleUrl: './user-registration.scss',
 })
 export class UserRegistrationComponent {
 
   userService=inject(UserService);
+
+  @ViewChild(FormGroupDirective) formDirective!: FormGroupDirective;
+
 
   registrationForm!: FormGroup;
   isLoading = signal(false);
@@ -219,9 +224,9 @@ export class UserRegistrationComponent {
       }
       console.log('Registration Data:', userData);
       this.userService.addUser(userData).subscribe((response) => {
-        if (response.statusCode === 201) {
+        if (response.status === 201) {
           this.snackBar.open('Registration successful!', 'Close', { duration: 5000 });
-          this.registrationForm.reset();
+          this.onReset();
         } else {
           this.snackBar.open(`Registration failed: ${response.message}`, 'Close', { duration: 5000 });
         }
@@ -232,6 +237,7 @@ export class UserRegistrationComponent {
 
   onReset(): void {
     this.registrationForm.reset();
+    this.formDirective.resetForm();
     this.passwordStrength.set({ score: 0, level: 'weak', feedback: [] });
   }
 

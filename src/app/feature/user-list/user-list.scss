@@ -59,6 +59,19 @@
   min-width: 0;
 }
 
+.user-list-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-list-card__add-button {
+  min-width: auto;
+  padding: 0.85rem 1.25rem;
+  border-radius: 14px;
+  font-size: 0.95rem;
+}
+
 .user-list-card__eyebrow {
   margin: 0 0 6px;
   font-size: 0.74rem;
@@ -201,7 +214,6 @@
 
 .example-table .mat-column-role {
   min-width: 130px;
-  text-transform: capitalize;
   font-weight: 600;
 }
 

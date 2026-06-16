@@ -25,6 +25,7 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'register',
+    loadComponent: () =>
+      import('./feature/not-found/not-found').then((m) => m.NotFoundComponent),
   },
 ];

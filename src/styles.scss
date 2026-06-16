@@ -86,7 +86,7 @@ body {
 
 .app-btn--submit,
 .submit-btn {
-  background: linear-gradient(135deg, var(--app-primary), var(--app-primary-dark));
+  background: linear-gradient(135deg, var(--app-primary), var(--app-primary-dark)) !important;
   color: var(--app-text-on-dark) !important;
   min-width: 180px;
 }

@@ -1,0 +1,24 @@
+<section class="not-found">
+  <mat-card class="not-found-card" appearance="outlined">
+    <div class="not-found-card__badge" aria-hidden="true">
+      <mat-icon>search_off</mat-icon>
+    </div>
+
+    <p class="not-found-card__eyebrow">404</p>
+    <h1 class="not-found-card__title">Page not found</h1>
+    <p class="not-found-card__description">
+      The page you’re looking for does not exist or may have moved.
+    </p>
+
+    <div class="not-found-card__actions">
+      <a mat-raised-button class="app-btn app-btn--submit edit-btn" routerLink="/register">
+        <mat-icon>person_add</mat-icon>
+        Go to registration
+      </a>
+      <a mat-stroked-button class="app-btn app-btn--cancel cancel-btn" routerLink="/users">
+        <mat-icon>group</mat-icon>
+        View users
+      </a>
+    </div>
+  </mat-card>
+</section>

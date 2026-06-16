@@ -33,6 +33,17 @@ export class UserService {
         );
     }
 
+    deleteUser(userId: number | string) {
+        return this.http.delete(`${this.userUrl}/${userId}`).pipe(
+            tap((response) => console.log('User deleted successfully:', response)),
+            map((response: any) => response),
+            catchError((error) => {
+                console.error('Error deleting user:', error);
+                return of({ statusCode: 500, message: error.message, data: null });
+            })
+        );
+    }
+
     getUsers(){
         return this.http.get(`${this.userUrl}`).pipe(
             tap((response) => console.log('Fetched users:', response)),
