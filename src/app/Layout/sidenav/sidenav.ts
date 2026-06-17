@@ -9,6 +9,9 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CommonService } from '../../Core/Services/common-service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { changeViewType } from '../../Core/Store/Action/viewAction.action';
+import { AsyncPipe, CommonModule } from '@angular/common';
 @Component({
   selector: 'app-sidenav',
   imports: [
@@ -20,6 +23,7 @@ import { map } from 'rxjs';
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
+    AsyncPipe
   ],
   templateUrl: './sidenav.html',
   styleUrl: './sidenav.scss',
@@ -27,6 +31,9 @@ import { map } from 'rxjs';
 export class Sidenav {
   private readonly commonService = inject(CommonService);
   private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly store = inject(Store);
+
+  viewType$ = this.store.select((state: any) => state.view.viewType);
 
   readonly isMobile = toSignal(
     this.breakpointObserver.observe('(max-width: 960px)').pipe(map((state) => state.matches)),
@@ -44,5 +51,9 @@ export class Sidenav {
     if (this.isMobile()) {
       this.commonService.closeSidenav();
     }
+  }
+
+  toggleViewType(): void {
+    this.store.dispatch(changeViewType());
   }
 }

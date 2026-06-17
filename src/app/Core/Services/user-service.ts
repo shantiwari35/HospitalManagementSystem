@@ -25,6 +25,15 @@ export class UserService {
     }
 
     addUser(userData:any){
+        if(userData.id){
+             return this.http.put(`${this.userUrl}`, userData).pipe(
+            tap((response) => console.log('User updated successfully:', response)),
+            map((response: any) => response), // Adjust based on actual API response structure
+            catchError((error) => {
+                return of({ statusCode: 500, message: error.message ,data: null});
+            })
+        );
+        }
         return this.http.post(`${this.userUrl}`, userData).pipe(
             tap((response) => console.log('User registered successfully:', response)),
             map((response: any) => response), // Adjust based on actual API response structure

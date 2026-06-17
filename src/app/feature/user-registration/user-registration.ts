@@ -22,7 +22,7 @@ import { UserService } from '../../Core/Services/user-service';
 import { TextFormatPipe } from '../../shared/pipe/text-format-pipe';
 import { Store } from '@ngrx/store';
 import { loadRoles, saveUser } from '../../Core/Store/Action/userAction.action';
-import { exhaustMap, filter, map, mergeMap, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 interface PasswordStrength {
@@ -70,12 +70,10 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
   hidePassword = signal(true);
   hideConfirmPassword = signal(true);
   agreedToTerms = signal(false);
+  id=signal<any>('');
 
   userRoles = this.store.select((state: any) => state.users.roles);
-  //  userRoles = rxResource({
-  //   loader:()=>this.userService.getRoles(),
-  // });
-
+  
   response$ = this.store.select((state: any) => state.users);
 
   constructor(
@@ -86,7 +84,7 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    let userId = '';
+  
     this.store.dispatch(loadRoles());
     this.response$
       .pipe(
@@ -96,8 +94,8 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         if (!res.loading) {
           this.isLoading.set(false);
-          if (res.response && res.response.status === 201) {
-            this.snackBar.open('Registration successful!', 'Close', { duration: 5000 });
+          if (res.response && (res.response.status === 201 || res.response.status===200)) {
+            this.snackBar.open(res.response.status === 201?'Registration successful!':'Updation successful!', 'Close', { duration: 5000 });
             this.onReset();
           } else if (res.error) {
             this.snackBar.open(`Registration failed: ${res.error}`, 'Close', { duration: 5000 });
@@ -106,29 +104,12 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
       });
 
     this.activatedRoutes.params.subscribe((id) => {
-      userId = id?.['id'];
-      console.log(userId)
-      if (userId) {
-      this.fetchUserData(userId);
+      this.id.set(id?.['id']);
+      
+      if (this.id()) {
+      this.fetchUserData(this.id());
     }
     });
-
-    
-    // .pipe(
-    //   filter((id) => !!id),
-    //   takeUntil(this.destroy$),
-    //   switchMap((id) => this.userService.getUserById(id)),
-    // )
-    // .subscribe((data) => {
-    //   const [firstName, lastName] = data.data.fullName.split(' ');
-
-    //   this.registrationForm.patchValue({
-    //     ...data.data,
-    //     firstName,
-    //     lastName,
-    //     userRole: data.data.role,
-    //   });
-    // });
   }
 
   private initializeForm(): void {
@@ -217,7 +198,9 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
 
     // Simulate API call
     const formData = this.registrationForm.value;
+    
     const userData = {
+      id:this.id()?this.id():'',
       fullName: this.fullName,
       email: formData.email,
       phone: formData.phone,
@@ -226,8 +209,7 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
       role: formData.userRole,
       agreedToTermsOfUse: formData.agreedToTerms,
     };
-    console.log('Registration Data:', userData);
-
+   
     this.store.dispatch(saveUser({ userData }));
   }
 

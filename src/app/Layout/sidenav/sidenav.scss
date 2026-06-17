@@ -163,3 +163,19 @@
     padding-bottom: 16px;
   }
 }
+
+.view-toggle-btn {
+  margin-left: auto;
+  transition: transform 160ms ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+  }
+}

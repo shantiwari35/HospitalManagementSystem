@@ -14,8 +14,10 @@ import { Router, RouterLink } from '@angular/router';
 import { HandleNullPipe } from '../../shared/pipe/handle-null-pipe';
 import { TextFormatPipe } from '../../shared/pipe/text-format-pipe';
 import { MatPopupService } from '../../shared/services/mat-popup.service';
-import { ColorCode } from '../../shared/directive/color-code';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
+import { ColorCode } from '../../shared/directive/color-code';
 import { deleteUser } from '../../Core/Store/Action/userAction.action';
 @Component({
   selector: 'app-user-list',
@@ -29,6 +31,8 @@ import { deleteUser } from '../../Core/Store/Action/userAction.action';
     MatButtonModule,
     MatCardModule,
     RouterLink,
+    CommonModule,
+    MatIconModule,
     HandleNullPipe,
     TextFormatPipe,
   ],
@@ -40,6 +44,8 @@ export class UserList implements OnInit {
   private popupService = inject(MatPopupService);
   private store = inject(Store);
   private router = inject(Router);
+
+  viewType$ = this.store.select((state: any) => state.view.viewType);
 
   displayedColumns: string[] = [
     'id',

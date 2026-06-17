@@ -35,6 +35,10 @@
         <span class="shell-toolbar__title">Hospital Management System</span>
         <span class="shell-toolbar__subtitle">Manage users from a clean, scrollable workspace</span>
       </div>
+
+      <button mat-icon-button type="button" aria-label="Toggle view type" (click)="toggleViewType()" class="view-toggle-btn" title="Switch between table and card view">
+        <mat-icon>{{ (viewType$ | async) === 'card' ? 'table_chart' : 'dashboard' }}</mat-icon>
+      </button>
     </mat-toolbar>
 
     <main class="shell-main">

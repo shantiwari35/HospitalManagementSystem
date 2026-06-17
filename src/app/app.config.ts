@@ -13,6 +13,8 @@ import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { userReducer } from './Core/Store/Reducer/user.reducer';
 import { UserEffect } from './Core/Store/Effect/UserEffect.effect';
+import { viewReducer } from './Core/Store/Reducer/viewType.reducer';
+import { metaReducers } from './Core/Store/Reducer/localStorageSync.reducer';
 
 export const API_URL = new InjectionToken<string>('API_URL');
 export const appConfig: ApplicationConfig = {
@@ -25,11 +27,17 @@ export const appConfig: ApplicationConfig = {
       provide: API_URL,
       useValue: 'http://localhost:8080/api',
     },
-    provideStore({
-      users: userReducer
-    }),
+    provideStore(
+      {
+        users: userReducer,
+        view: viewReducer,
+      },
+      {
+        metaReducers,
+      },
+    ),
     provideEffects([UserEffect]),
-      provideStoreDevtools({
+    provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode
       autoPause: true, // Pauses recording actions and state changes when the extension window is not open
@@ -40,4 +48,3 @@ export const appConfig: ApplicationConfig = {
     provideEffects(),
   ],
 };
-

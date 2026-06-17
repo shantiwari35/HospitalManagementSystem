@@ -1,8 +1,10 @@
 <mat-toolbar>
-  <button matIconButton class="example-icon" aria-label="Example icon-button with menu icon" (click)="toggleSidenav()">
+  <button matIconButton aria-label="Toggle navigation" (click)="toggleSidenav()">
     <mat-icon>menu</mat-icon>
   </button>
   <span>Hospital Management System</span>
   <span class="example-spacer"></span>
-
+  <button matIconButton aria-label="Toggle view type" (click)="toggleViewType()" class="view-toggle-btn">
+    <mat-icon>{{ (viewType$ | async) === 'card' ? 'table_chart' : 'dashboard' }}</mat-icon>
+  </button>
 </mat-toolbar>

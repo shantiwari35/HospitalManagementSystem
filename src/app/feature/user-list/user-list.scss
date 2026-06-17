@@ -314,3 +314,129 @@ mat-paginator {
     margin-top: 0;
   }
 }
+
+/* Card View Styles */
+.card-view-container {
+  position: relative;
+}
+
+.users-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+  padding: 24px 0;
+}
+
+.user-card {
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+  border: 1px solid #dbe4f0;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+  }
+}
+
+.user-card mat-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%);
+  color: #ffffff;
+  border-radius: 16px 16px 0 0;
+}
+
+.user-card__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.user-card__header-content {
+  min-width: 0;
+}
+
+.user-card mat-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.user-card__role {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+  color: #ffffff;
+}
+
+.user-card mat-card-content {
+  padding: 20px;
+}
+
+.user-card__detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #e2e8f0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.user-card__label {
+  font-weight: 600;
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+.user-card__value {
+  color: #0f172a;
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+
+.user-card mat-card-actions {
+  display: flex;
+  gap: 8px;
+  padding: 12px 20px;
+  justify-content: flex-end;
+}
+
+.user-card button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.user-card button mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+}
+
+@media (max-width: 768px) {
+  .users-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .users-grid {
+    grid-template-columns: 1fr;
+  }
+}
